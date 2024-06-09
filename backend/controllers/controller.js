@@ -68,8 +68,5 @@ const checkuser = async (req, res) => {
   }
 };
 
-// user.findMany( { where: { OR: [{ username : "aman" }, { email: "vermaji9585@gmail.com" }] },}).then(v=>{
-//     console.log(v);
-// })
 
 module.exports = { addUser, checkuser };

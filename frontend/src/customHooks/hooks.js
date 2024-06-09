@@ -1,15 +1,26 @@
-import {useSelector} from "react-redux"
-import {useNavigate} from "react-router-dom"
-import {useEffect} from "react"
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const useTokenPresent = () => {
   const user = useSelector((state) => state.userReducer.user);
   const navigate = useNavigate();
   useEffect(() => {
     if (user !== null) {
-      navigate("/");
+      navigate("/bid");
     }
   }, [user, navigate]);
 };
 
-export { useTokenPresent };
+const useTokenAbsent = () => {
+  const user = useSelector((state) => state.userReducer.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user === null) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+};
+
+export { useTokenPresent, useTokenAbsent };
