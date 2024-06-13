@@ -9,10 +9,17 @@ import {
 import Loginlogout from "./loginlogout";
 import Usericon from "./usericon";
 import { useSelector } from "react-redux";
+import { Flex, useColorMode, useDisclosure } from "@chakra-ui/react";
+
+import { ArrowForwardIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import DrawerBtn from "./drawerBtn";
 
 export function StickyNavbar() {
   const [openNav, setOpenNav] = React.useState(false);
   const [loggedin, setloggedin] = React.useState(false);
+
+  const { colorMode, toggleColorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useSelector((state) => state.userReducer.user);
   useEffect(() => {
     if (user === null) {
@@ -78,6 +85,11 @@ export function StickyNavbar() {
       <div className="h-18">
         <Navbar className=" top-0 z-10 h-max max-w-full rounded-none px-4 lg:px-8 lg:">
           <div className="flex items-center justify-between text-blue-gray-900">
+            <div className="flex space-x-2">
+              <div className="md:hidden"> 
+              <DrawerBtn/>
+              </div>
+
             <Typography
               as="a"
               href="#"
@@ -85,9 +97,15 @@ export function StickyNavbar() {
             >
               WorkMate
             </Typography>
+                          
+            </div>
             <div className="flex items-center gap-4">
               <div className="mr-4 hidden lg:block">{navList}</div>
-              {loggedin ? <Usericon /> : <Loginlogout />}
+              <Button onClick={toggleColorMode}>
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              </Button>
+
+              <>{loggedin ? <Usericon /> : <Loginlogout />}</>
 
               <IconButton
                 variant="text"
@@ -128,10 +146,10 @@ export function StickyNavbar() {
               </IconButton>
             </div>
           </div>
-          <MobileNav open={openNav}>
+          {/* <MobileNav open={openNav}>
             {navList}
             {loggedin ? <Usericon /> : <Loginlogout />}
-          </MobileNav>
+          </MobileNav> */}
         </Navbar>
       </div>
     </>

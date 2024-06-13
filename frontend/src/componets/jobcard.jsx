@@ -1,51 +1,73 @@
 export default Jobcard;
 import {
+  Button,
+  ButtonGroup,
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
-  Typography,
-  Button,
-} from "@material-tailwind/react";
-
+  Divider,
+  Heading,
+  Image,
+  Stack,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import SpinnerComp from "./spinner";
+// src="https://picsum.photos/352/144"
 export function Jobcard() {
+  const { colorMode } = useColorMode();
+  const navigate = useNavigate();
   return (
-    <div className="px-3 py-2 ">
-      <Card className="w-full md:w-96">
-        <CardHeader shadow={false} floated={false} className="h-40">
-          <img
-            src="https://picsum.photos/352/144"
-            alt="card-image"
-            className="h-full w-full object-cover"
-          />
-        </CardHeader>
-        <CardBody>
-          <div className="mb-2 flex items-center justify-between">
-            <Typography color="blue-gray" className="font-medium">
-              Apple AirPods
-            </Typography>
-            <Typography color="blue-gray" className="font-medium">
-              $95.00
-            </Typography>
-          </div>
-          <Typography
-            variant="small"
-            color="gray"
-            className="font-normal opacity-75"
-          >
-            With plenty of talk and listen time, voice-activated Siri access,
-            and an available wireless charging case.
-          </Typography>
-        </CardBody>
-        <CardFooter className="pt-0">
-          <Button
-            ripple={false}
-            fullWidth={true}
-            className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-          >
-            Add to Cart
-          </Button>
-        </CardFooter>
+    <div className="px-3 py-2 w-full md:w-96 ">
+      <Card
+        bg={`${colorMode == "dark" ? "#3D3D3D" : ""} `}
+        direction={{ base: "row", md: "column" }}
+        overflow="hidden"
+        variant="outline"
+      >
+        <Image
+          // src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+          src="https://picsum.photos/352/144"
+          alt="Green double couch with wooden leFgs"
+          borderRadius="lg"
+          objectFit="cover"
+          maxW={{ base: "100%", sm: "200px", md: "600px" }}
+        />
+        <Stack>
+          <CardBody className="w-full ">
+            <Stack mt="6" spacing="3">
+              <div className="flex justify-between">
+                <div>
+                  <Heading size="md">Living room Sofa</Heading>
+                </div>
+                <div className="px-2">
+                  <Text colorScheme="blue" fontSize="xl">
+                    $450
+                  </Text>
+                </div>
+              </div>
+              <div className=" w-full overflow-hidden ">
+                <p className="overflow-hidden text-ellipsis line-clamp-3">
+                  {/* <Text> */}
+                  This sofa is perfect for modern tropical spaces, baroque
+                  inspired spaces, earthy toned spaces and for people who love a
+                  chic design with a sprinkle of vintage design.
+                  {/* </Text> */}
+                </p>
+              </div>
+              <ButtonGroup spacing="2">
+                <Button
+                  variant="solid"
+                  onClick={() => navigate("/bid/jakndfkjaskjd")}
+                  colorScheme="blue"
+                >
+                  View Task
+                </Button>
+              </ButtonGroup>
+            </Stack>
+          </CardBody>
+        </Stack>
       </Card>
     </div>
   );
