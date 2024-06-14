@@ -9,22 +9,26 @@ import BidderHomepage from "./pages/bidderHomepage";
 import Homepage from "./pages/homepage";
 import Taskinfo from "./pages/taskinfo";
 import ChooseBidder from "./pages/chooseBidder";
+import { useColorMode } from "@chakra-ui/react";
 
 function App() {
+  const { colorMode } = useColorMode();
   return (
     <>
-      <StickyNavbar />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/bid" element={<BidderHomepage />} /> 
-          <Route path="/bid/:taskid" element={<Taskinfo />} /> 
-          <Route path="/chooseBidder" element={<ChooseBidder />} /> 
-        </Routes>
-      </BrowserRouter>
-      <ToastContainer />
+      <div className={`${colorMode == "dark" ? "dark" : ""}`}>
+        <StickyNavbar />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/bid" element={<BidderHomepage />} />
+            <Route path="/bid/:taskid" element={<Taskinfo />} />
+            <Route path="/chooseBidder" element={<ChooseBidder />} />
+          </Routes>
+        </BrowserRouter>
+        <ToastContainer />
+      </div>
     </>
   );
 }
