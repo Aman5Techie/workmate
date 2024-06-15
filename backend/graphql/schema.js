@@ -2,6 +2,8 @@ const { gql } = require("apollo-server");
 
 // Define your GraphQL schema
 const typeDefs = gql`
+  ############################################################### MODEL BELOW ############################################
+
   enum role {
     proposer
     bidder
@@ -47,6 +49,20 @@ const typeDefs = gql`
     task: [Task!]!
   }
 
+  type Answer {
+    id: Int!
+    questions: [String!]!
+    answers: [String!]!
+    userid: String!
+    taskid: String!
+    user: User
+  }
+
+  ############################################################### QUERY BELOW ############################################
+  type AnswerQuery {
+    getAnswers(taskid: String!): [Answer!]!
+  }
+
   # Users Query
   type UsersQuery {
     users: [User!]! # Get All Users
@@ -67,8 +83,8 @@ const typeDefs = gql`
   }
 
   # Question Query
-  type QuestionQuery{
-    questions : [Question]!
+  type QuestionQuery {
+    questions: [Question]!
   }
 
   # Main Query
@@ -76,9 +92,10 @@ const typeDefs = gql`
     userQuery: UsersQuery
     taskQuery: TaskQuery
     tagsQuery: TagsQuery
-    questionQuery :QuestionQuery
+    questionQuery: QuestionQuery
+    answerQuery: AnswerQuery
   }
-
+  ####################################### MUTATION ######################################################################################
   type TagsMutation {
     createTag(id: Int!, name: String!): Tags!
   }
@@ -100,9 +117,19 @@ const typeDefs = gql`
     ): Task!
   }
 
+  type AnswerMutation {
+    createAnswer(
+      questions: [String!]!
+      answers: [String!]!
+      userid: String!
+      taskid: String!
+    ): Answer!
+  }
+
   type Mutation {
     tagsMutation: TagsMutation
     taskMutation: TaskMutation
+    answerMutation: AnswerMutation
   }
 `;
 

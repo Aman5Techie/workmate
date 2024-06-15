@@ -43,3 +43,8 @@ model Tag {
   orders Order[]  @relation("OrderToTag")
 }
 
+model Answer {
+  id 
+  question String 
+  answer String
+}

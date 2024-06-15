@@ -11,6 +11,7 @@ const resolvers = {
     taskQuery: () => ({}),
     tagsQuery: () => ({}),
     questionQuery: () => ({}),
+    answerQuery: () => ({}),
   },
   UsersQuery: {
     users: async () => {
@@ -23,10 +24,13 @@ const resolvers = {
 
   TaskQuery: {
     tasks: async () => {
-      return prisma.task.findMany({include : {question: true,tags:true}});
+      return prisma.task.findMany({ include: { question: true, tags: true } });
     },
     task: async (_, { id }) => {
-      return prisma.task.findMany({ where: { id } });
+      return prisma.task.findUnique({
+        where: { id },
+        include: { question: true, tags: true },
+      });
     },
     taskByTag: async (_, { tag }) => {
       return prisma.task.findMany({
@@ -43,23 +47,32 @@ const resolvers = {
 
   TagsQuery: {
     tags: async () => {
-      return await prisma.tags.findMany({});
+      return await prisma.tags.findMany({ include: { task: true } });
     },
     tag: async (_, { id }) => {
-      return await prisma.tags.findUnique({ where: { id } });
+      return await prisma.tags.findUnique({
+        where: { id },
+        include: { task: true },
+      });
     },
   },
 
-  QuestionQuery : {
-    questions : async()=>{
-      return await prisma.question.findMany({})
-    }
+  QuestionQuery: {
+    questions: async () => {
+      return await prisma.question.findMany({});
+    },
   },
 
+  AnswerQuery: {
+    getAnswers: async (_, { taskid }) => {
+      return await prisma.answer.findMany({ where: { taskid: taskid } });
+    },
+  },
+  // ################################################{MUTATION}#################################################################
   Mutation: {
     tagsMutation: () => ({}),
     taskMutation: () => ({}),
-
+    answerMutation: () => ({}),
   },
   TagsMutation: {
     createTag: async (_, { id, name }) => {
@@ -91,8 +104,6 @@ const resolvers = {
         questions,
       }
     ) => {
-      
-      console.log("coming");
       return await prisma.task.create({
         data: {
           title,
@@ -111,9 +122,7 @@ const resolvers = {
           question: {
             create: questions.map((question) => ({
               question: question,
-              
             })),
-            
           },
         },
         include: {
@@ -121,9 +130,43 @@ const resolvers = {
           question: true,
         },
       });
-     
+    },
+  },
+
+  AnswerMutation: {
+    createAnswer: (_, { answers, userid, taskid, questions }) => {
+      return prisma.answer.create({
+        data: {
+          answers,
+          userid,
+          taskid,
+          questions,
+        },
+      });
+    },
+  },
+  //################################################{INDIVISUAL FEATURES}#################################################################
+
+  Task: {
+    questions: async (parent) => {
+      return prisma.question.findMany({ where: { taskId: parent.id } });
+    },
+  },
+
+  User: {
+    task: async (parent) => {
+      const a = await prisma.task.findMany({ where: { userId: parent.id } });
+      return a;
+    },
+  },
+
+  Answer: {
+    user: async (parent) => {
+      return await prisma.user.findUnique({ where: { id: parent.userid } });
     },
   },
 };
+
+// prisma.answer.deleteMany({}).then(a=>console.log(a))
 
 module.exports = resolvers;
