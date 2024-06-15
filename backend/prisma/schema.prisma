@@ -13,17 +13,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum role{
+enum role {
   proposer
   bidder
 }
 
-model User{
-  id String @id @default(uuid())
-  username String @unique
-  email String @unique
-  password String
-  role role
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      role
   createdAt DateTime @default(now())
+  tasks   Task[] @relation("TaskOfUser")
+
 }
 
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  taskId      String     @unique
+  userId      String     @unique // users ID
+  location    String
+  status      String
+  Bid         String
+  createdAt   DateTime   @default(now())
+  description String
+  amenties    String
+  amount      Int
+  imageurl    String
+  tags        Tags[]     @relation("TaskToTag")
+  question    Question[] @relation("Questions")
+  user User @relation("TaskOfUser", fields: [userId], references: [id])
+}
+
+model Question {
+  id       Int    @id @default(autoincrement())
+  question String
+  taskId String
+  task   Task   @relation("Questions", fields: [taskId], references: [id])
+}
+
+model Tags {
+  id   Int  @id @unique
+  name String @unique
+  task Task[] @relation("TaskToTag")
+}
