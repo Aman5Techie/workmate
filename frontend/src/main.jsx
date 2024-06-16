@@ -34,6 +34,7 @@ import { ThemeProvider as TailwindThemeProvider } from "@material-tailwind/react
 
 const muiTheme = createTheme({
   // Add your MUI theme configurations here
+  shadows : Array(25).fill('none')
 });
 
 const chakraTheme = extendChakraTheme({

@@ -30,22 +30,28 @@ model User {
 }
 
 model Task {
-  id          String     @id @default(uuid())
-  title       String
-  taskId      String     @unique
-  userId      String // users ID
-  location    String
-  status      String
-  Bid         String
-  createdAt   DateTime   @default(now())
-  description String
-  amenties    String
-  amount      Int
-  imageurl    String
-  tags        Tags[]     @relation("TaskToTag")
-  question    Question[] @relation("Questions")
-  user        User       @relation("TaskOfUser", fields: [userId], references: [id])
-  answer      Answer[]   @relation("taskAnswers")
+  id            String     @id @default(uuid())
+  title         String
+  taskId        String     @unique
+  userId        String // users ID
+  location      String  // String of google Maps 
+  status        String
+  Bid           String
+  createdAt     DateTime   @default(now())
+  description   String
+  amenties      String
+  amount        Int
+  imageurl      String
+  State         String
+  city          String
+  city_district String
+  latitide      String
+  longitude     String
+  tags          Tags[]     @relation("TaskToTag")
+  question      Question[] @relation("Questions")
+  user          User       @relation("TaskOfUser", fields: [userId], references: [id])
+  answer        Answer[]   @relation("taskAnswers")
+  
 }
 
 model Question {
@@ -67,9 +73,12 @@ model Answer {
   answers   String[]
   userid    String
   taskid    String
+  amount    Int
   user      User     @relation("userAnswers", fields: [userid], references: [id])
   task      Task     @relation("taskAnswers", fields: [taskid], references: [id])
-  
+  createdAt DateTime @default(now())
+
+  @@unique([userid, taskid])
 }
 
 // want to add a created AT and @@Unique()

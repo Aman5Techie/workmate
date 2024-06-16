@@ -105,7 +105,7 @@ export function StickyNavbar() {
                 {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
               </Button>
 
-              <>{loggedin ? <Usericon /> : <Loginlogout />}</>
+              <>{loggedin ? <Usericon name={user.username} /> : <Loginlogout />}</>
 
               <IconButton
                 variant="text"

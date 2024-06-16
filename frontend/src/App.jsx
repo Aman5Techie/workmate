@@ -10,6 +10,7 @@ import Homepage from "./pages/homepage";
 import Taskinfo from "./pages/taskinfo";
 import ChooseBidder from "./pages/chooseBidder";
 import { useColorMode } from "@chakra-ui/react";
+import PostTask from "./pages/postTask";
 
 function App() {
   const { colorMode } = useColorMode();
@@ -25,6 +26,7 @@ function App() {
             <Route path="/bid" element={<BidderHomepage />} />
             <Route path="/bid/:taskid" element={<Taskinfo />} />
             <Route path="/chooseBidder" element={<ChooseBidder />} />
+            <Route path="/posttask" element={<PostTask />} />
           </Routes>
         </BrowserRouter>
         <ToastContainer />

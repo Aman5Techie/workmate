@@ -54,6 +54,8 @@ const typeDefs = gql`
     questions: [String!]!
     answers: [String!]!
     userid: String!
+    amount: Int!
+    createdAt: Int!
     taskid: String!
     user: User
   }
@@ -123,6 +125,7 @@ const typeDefs = gql`
       answers: [String!]!
       userid: String!
       taskid: String!
+      amount: Int!
     ): Answer!
   }
 

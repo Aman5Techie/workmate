@@ -1,6 +1,6 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import PropTypes from "prop-types";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SpinnerComp from "../componets/spinner";
 import {
   Avatar,
@@ -29,21 +29,27 @@ import Questions from "../componets/questions";
 import PlusMinusButton from "../componets/priceButton";
 
 const tags = [
-  "Technology",
-  "Design",
-  "Programming",
-  "Science",
-  "Art",
-  // "Music",
-  // "Business",
-  // "Travel",
-  // "Food",
-  // "Fitness",
-  // "Photography",
-  // "Fashion",
-  "Health",
-  "Education",
-  "Sports",
+  "Cleaning",
+  "Gardening",
+  "Repairs",
+  "Delivery",
+  "Assembly",
+  "Painting",
+  "Writing",
+  "Tutoring",
+  "Moving",
+  "Pet Care",
+  "Shopping",
+  "Data Entry",
+  "Graphic Design",
+  "Event Planning",
+  "Personal Assistant",
+  "Plumbing",
+  "Electrical",
+  "Web Development",
+  "Photography",
+  "Marketing",
+  "OTHER",
 ];
 
 const questions = [
@@ -51,7 +57,6 @@ const questions = [
   "How you are going to acheive this ? ",
   "How you are going to acheive this ? ",
 ];
-
 
 const Taskinfo = () => {
   // const { taskid } = useParams();
@@ -131,7 +136,8 @@ const Taskinfo = () => {
               <Image
                 objectFit="cover"
                 maxW={{ base: "100%", md: "300px" }}
-                src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+                // src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+                src="https://fastly.picsum.photos/id/165/352/144.jpg?hmac=l3lzQqL1s1Gk0-MV92s5fUntY016Dkapt8QJQuUC-v0"
                 alt="Caffe Latte"
                 className="h-56 w-full md:h-80 md:w-full"
               />
