@@ -21,17 +21,21 @@ const typeDefs = gql`
 
   type Task {
     id: String!
-    title: String
-    taskId: String
-    userId: String
-    location: String
-    status: String
-    Bid: String
-    createdAt: String
-    description: String
-    amenties: String
-    amount: Int
-    imageurl: String
+    title: String!
+    taskId: String!
+    userId: String!
+    location: String!
+    status: String!
+    Bid: String!
+    description: String!
+    amenties: String!
+    amount: Int!
+    imageurl: String!
+    state: String
+    city: String
+    city_district: String
+    latitide: String
+    longitude: String
     tags: [Tags!]!
     questions: [Question!]!
   }
@@ -114,6 +118,11 @@ const typeDefs = gql`
       amenties: String!
       amount: Int!
       imageurl: String!
+      state: String
+      city: String
+      city_district: String
+      latitide: String
+      longitude: String
       tags: [Int!]!
       questions: [String!]!
     ): Task!

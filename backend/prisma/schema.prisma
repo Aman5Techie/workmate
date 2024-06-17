@@ -42,7 +42,7 @@ model Task {
   amenties      String
   amount        Int
   imageurl      String
-  State         String
+  state         String
   city          String
   city_district String
   latitide      String
@@ -58,7 +58,7 @@ model Question {
   id       Int    @id @default(autoincrement())
   question String
   taskId   String
-  task     Task   @relation("Questions", fields: [taskId], references: [id])
+  task     Task   @relation("Questions", fields: [taskId], references: [id],onDelete: Cascade)
 }
 
 model Tags {
@@ -74,8 +74,8 @@ model Answer {
   userid    String
   taskid    String
   amount    Int
-  user      User     @relation("userAnswers", fields: [userid], references: [id])
-  task      Task     @relation("taskAnswers", fields: [taskid], references: [id])
+  user      User     @relation("userAnswers", fields: [userid], references: [id],onDelete: Cascade)
+  task      Task     @relation("taskAnswers", fields: [taskid], references: [id],onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@unique([userid, taskid])

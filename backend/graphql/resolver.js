@@ -167,6 +167,6 @@ const resolvers = {
   },
 };
 
-prisma.task.findMany({}).then(a=>console.log(a))
+prisma.answer.deleteMany({}).then(a=>console.log(a))
 
 module.exports = resolvers;

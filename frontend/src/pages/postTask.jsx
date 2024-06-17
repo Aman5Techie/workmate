@@ -34,12 +34,14 @@ import { useLocation } from "react-router-dom";
 import { useUserLocation } from "../customHooks/locationhook";
 import { useSelector } from "react-redux";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import Choosetags from "../componets/choosetags";
 
 const PostTask = () => {
   // State for form inputs
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [userSelectedTags,setuserSelectedTags] = useState([])
   const [bidAmount, setBidAmount] = useState("");
   const [questions, setquestions] = useState(["What should we Choose You ?"]);
   const timeoutid = useRef([]);
@@ -60,7 +62,7 @@ const PostTask = () => {
       setlocationdata({
         state: userdata.address.state,
         city: userdata.address.city,
-        district: userdata.address.city_district,
+        district: userdata.address.city_district || userdata.address.state_district,
       });
     }
   }, [userdata]);
@@ -111,8 +113,8 @@ const PostTask = () => {
       city_district: locationdata.district,
       latitide: userdata.lat,
       longitude: userdata.lon,
-      tags: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      question: ["Q1", "Q2"],
+      tags: userSelectedTags,
+      question: questions,
     };
 
     // Perform form submission logic here, e.g., sending data to backend
@@ -333,6 +335,8 @@ const PostTask = () => {
                         </Button>
                       </div>
                     </FormControl>
+
+                    <Choosetags userSelectedTags={setuserSelectedTags}/>
 
                     <Button type="submit" colorScheme="blue" mt="4">
                       Submit Task

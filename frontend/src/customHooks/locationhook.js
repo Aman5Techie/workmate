@@ -32,7 +32,7 @@ export const useUserLocation = () => {
       const cuurentData = await _data.json();
       setdata(cuurentData);
     }
-    // getUserData();
+    getUserData();
   }, [location]);
 
   if (data != null) {

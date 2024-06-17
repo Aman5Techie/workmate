@@ -1,0 +1,128 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Divider,
+  FormControl,
+  FormLabel,
+  TagCloseButton,
+} from "@chakra-ui/react";
+import { Tag, TagLabel, Wrap, WrapItem } from "@chakra-ui/react";
+
+const tags = [
+  "Cleaning",
+  "Gardening",
+  "Repairs",
+  "Delivery",
+  "Assembly",
+  "Painting",
+  "Writing",
+  "Tutoring",
+  "Moving",
+  "Pet Care",
+  "Shopping",
+  "Data Entry",
+  "Graphic Design",
+  "Event Planning",
+  "Personal Assistant",
+  "Plumbing",
+  "Electrical",
+  "Web Development",
+  "Photography",
+  "Marketing",
+  "OTHER",
+];
+
+const colors = [
+  "green",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "teal",
+  "blue",
+  "cyan",
+  "purple",
+  "pink",
+  "blackAlpha",
+];
+const Choosetags = ({ userSelectedTags }) => {
+  const [selectedTag, setselectedTag] = useState({});
+
+  const selectTag = (tag, index) => {
+    if (selectedTag[tag] == undefined) {
+      setselectedTag({ ...selectedTag, [tag]: index });
+    } else {
+      delete selectedTag[tag];
+      setselectedTag({ ...selectedTag });
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      console.log("Now DO ");
+      const tagsIds = Object.values(selectedTag);
+      userSelectedTags(tagsIds);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [selectedTag, userSelectedTags]);
+
+  return (
+    <div className=" py-2">
+      <Divider />
+      <FormControl mt="1">
+        <FormLabel>TAGS (Select the tag Atleast 2)</FormLabel>
+        <div>
+          <Wrap spacing={2}>
+            {tags.map((tag, index) => (
+              <WrapItem
+                key={index}
+                cursor={"pointer"}
+                onClick={() => {
+                  selectTag(tag, index);
+                }}
+              >
+                <IndividualTag
+                  name={tag}
+                  bool={selectedTag[tag] == undefined ? false : true}
+                  index={index}
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
+        </div>
+      </FormControl>
+    </div>
+  );
+};
+
+Choosetags.propTypes = {
+  userSelectedTags: PropTypes.func,
+};
+
+const IndividualTag = ({ name, bool, index }) => {
+  return (
+    <>
+      <Tag
+        size="md"
+        key="md"
+        borderRadius="full"
+        variant="solid"
+        bg={`${colors[index % colors.length]}.400`}
+      >
+        <TagLabel>{name}</TagLabel>
+        {bool && <TagCloseButton />}
+      </Tag>
+    </>
+  );
+};
+
+IndividualTag.propTypes = {
+  name: PropTypes.string,
+  bool: PropTypes.bool,
+  index: PropTypes.number,
+};
+
+export default Choosetags;
