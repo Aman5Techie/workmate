@@ -22,17 +22,18 @@ export function Jobcard() {
     <div className="px-3 py-2 w-full md:w-96 ">
       <Card
         bg={`${colorMode == "dark" ? "#3D3D3D" : ""} `}
-        direction={{ base: "row", md: "column" }}
+        direction={{ base: "column", md: "column", sm:"row" }}
         overflow="hidden"
         variant="outline"
       >
         <Image
-          // src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-          src="https://picsum.photos/352/144"
+          // src = "https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1597092430872-09a3f4338c60"
+          src="https://images.unsplash.com/photo-1616680802368-03858af6588a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MjA2ODh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg3MjQ4MjN8&ixlib=rb-4.0.3&q=80&w=400"
           alt="Green double couch with wooden leFgs"
           borderRadius="lg"
           objectFit="cover"
-          maxW={{ base: "100%", sm: "200px", md: "600px" }}
+          maxH={{base : 150 , sm:"250px",md:"260px"}}
+          maxW={{ base: "100%", sm: "150px", md: "500px" }}
         />
         <Stack>
           <CardBody className="w-full ">

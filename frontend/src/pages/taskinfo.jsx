@@ -136,8 +136,7 @@ const Taskinfo = () => {
               <Image
                 objectFit="cover"
                 maxW={{ base: "100%", md: "300px" }}
-                // src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-                src="https://fastly.picsum.photos/id/165/352/144.jpg?hmac=l3lzQqL1s1Gk0-MV92s5fUntY016Dkapt8QJQuUC-v0"
+                src="https://images.unsplash.com/photo-1616680802368-03858af6588a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MjA2ODh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg3MjQ4MjN8&ixlib=rb-4.0.3&q=80&w=400"
                 alt="Caffe Latte"
                 className="h-56 w-full md:h-80 md:w-full"
               />
@@ -193,10 +192,10 @@ const Taskinfo = () => {
                   </List>
                   <div className="flex">
                     <Text pt="2" className="font-semibold">
-                      Bid Status :
+                      Mode :
                     </Text>
                     <Text pt="2" className="px-2 uppercase">
-                      Available
+                      REMOTE
                     </Text>
                   </div>
                   <Flex>
@@ -243,7 +242,7 @@ const Taskinfo = () => {
               <Heading size="md" py={1} px={4}>
                 Amenities
               </Heading>
-              <AmenitiesList />
+              <AmenitiesList useramenties={[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]} />
             </Card>
 
             {/* // diveder  */}

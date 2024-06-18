@@ -167,6 +167,31 @@ const resolvers = {
   },
 };
 
-prisma.answer.deleteMany({}).then(a=>console.log(a))
+const tags = [
+  "Cleaning",
+  "Gardening",
+  "Repairs",
+  "Delivery",
+  "Assembly",
+  "Painting",
+  "Writing",
+  "Tutoring",
+  "Moving",
+  "Pet Care",
+  "Shopping",
+  "Data Entry",
+  "Graphic Design",
+  "Event Planning",
+  "Personal Assistant",
+  "Plumbing",
+  "Electrical",
+  "Web Development",
+  "Photography",
+  "Marketing",
+  "OTHER",
+];
+
+// prisma.tags.createMany({data : tags.map((name,index)=>({name,id:index}))}).then(a=>console.log(a))
+// prisma.tags.deleteMany({}).then(a=>console.log(a))
 
 module.exports = resolvers;

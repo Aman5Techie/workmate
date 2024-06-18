@@ -24,6 +24,9 @@ export const useUserLocation = () => {
 
   useEffect(() => {
     async function getUserData() {
+      if(location == null){
+        return;
+      }
       const _data = await fetch(
         `https://us1.locationiq.com/v1/reverse?key=${
           import.meta.env.REACT_APP_APIKEY

@@ -34,7 +34,7 @@ import { ThemeProvider as TailwindThemeProvider } from "@material-tailwind/react
 
 const muiTheme = createTheme({
   // Add your MUI theme configurations here
-  shadows : Array(25).fill('none')
+  shadows: Array(25).fill("none"),
 });
 
 const chakraTheme = extendChakraTheme({
@@ -45,21 +45,26 @@ const chakraTheme = extendChakraTheme({
     },
   },
   config: {
-    initialColorMode: 'light',
+    initialColorMode: "light",
     useSystemColorMode: false,
   },
 });
 
-const tailwindTheme = {
-  // Add your Tailwind theme configurations here
-};
+import { InMemoryCache, ApolloProvider, ApolloClient } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "http://localhost:4000/",
+  cache: new InMemoryCache(),
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <MUIThemeProvider theme={muiTheme}>
       <ChakraProvider theme={chakraTheme}>
         <Provider store={store}>
-          <App />
+          <ApolloProvider client={client}>
+            <App />
+          </ApolloProvider>
         </Provider>
       </ChakraProvider>
     </MUIThemeProvider>

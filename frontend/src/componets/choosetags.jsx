@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Divider,
   FormControl,
   FormLabel,
   TagCloseButton,
+  useToast,
 } from "@chakra-ui/react";
 import { Tag, TagLabel, Wrap, WrapItem } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { setloading } from "../app/slices/loadingSlice";
 
 const tags = [
   "Cleaning",
@@ -47,8 +50,24 @@ const colors = [
 ];
 const Choosetags = ({ userSelectedTags }) => {
   const [selectedTag, setselectedTag] = useState({});
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const ShowError = () => {
+    toast({
+      title: "Max 14 Tags are Allowed",
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+      position: "top-right",
+    });
+  };
 
   const selectTag = (tag, index) => {
+    dispatch(setloading(true));
+    if (Object.entries(selectedTag).length > 14) {
+      ShowError();
+      return;
+    }
     if (selectedTag[tag] == undefined) {
       setselectedTag({ ...selectedTag, [tag]: index });
     } else {
@@ -59,7 +78,6 @@ const Choosetags = ({ userSelectedTags }) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log("Now DO ");
       const tagsIds = Object.values(selectedTag);
       userSelectedTags(tagsIds);
     }, 2000);
@@ -70,10 +88,7 @@ const Choosetags = ({ userSelectedTags }) => {
   }, [selectedTag, userSelectedTags]);
 
   return (
-    <div className=" py-2">
-      <Divider />
-      <FormControl mt="1">
-        <FormLabel>TAGS (Select the tag Atleast 2)</FormLabel>
+    
         <div>
           <Wrap spacing={2}>
             {tags.map((tag, index) => (
@@ -93,8 +108,7 @@ const Choosetags = ({ userSelectedTags }) => {
             ))}
           </Wrap>
         </div>
-      </FormControl>
-    </div>
+      
   );
 };
 

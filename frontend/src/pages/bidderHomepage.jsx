@@ -5,6 +5,8 @@ import Tags from "../componets/tags";
 import Jobcard from "../componets/jobcard";
 import { useColorMode } from "@chakra-ui/react";
 import { Box, Pagination } from "@mui/material";
+import { useQuery } from "@apollo/client";
+import { getUser } from "../graphql/query";
 
 const BidderHomepage = () => {
   useTokenAbsent();
@@ -18,7 +20,7 @@ const BidderHomepage = () => {
           <Tags />
         </div>
         <div className=" flex justify-center">
-          <Jobs theme={colorMode}/>
+          <Jobs theme={colorMode} />
         </div>
       </div>
 
@@ -27,26 +29,27 @@ const BidderHomepage = () => {
   );
 };
 
-const Jobs = ({theme}) => {
-  const [jobs, setjobs] = useState([1, 2, 3, 4, 5, 6,]);
-  const [currentpage,setcurrentpage] = useState(1);
+const Jobs = ({ theme }) => {
+  const [jobs, setjobs] = useState([1, 2, 3, 4, 5, 6]);
+  const [currentpage, setcurrentpage] = useState(1);
+  const { data, loading, error } = useQuery(getUser);
 
-  useEffect(()=>{
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
-  },[])
-
-  const changePageNumber = (e,page)=>{
-    setcurrentpage(page)
+  const changePageNumber = (e, page) => {
+    setcurrentpage(page);
     console.log(page);
-  }
+  };
 
   return (
     <>
       <div>
         <div className="w-full  md:flex ">
           <div className="flex flex-wrap justify-center  md:justify-center  dark:bg-[#121212] ">
-            {jobs.map((_,i) => {
-             return <Jobcard key={i} />;
+            {jobs.map((_, i) => {
+              return <Jobcard key={i} />;
             })}
           </div>
         </div>

@@ -26,7 +26,6 @@ const typeDefs = gql`
     userId: String!
     location: String!
     status: String!
-    Bid: String!
     description: String!
     amenties: String!
     amount: Int!
@@ -109,13 +108,11 @@ const typeDefs = gql`
   type TaskMutation {
     createTask(
       title: String!
-      taskId: String!
       userId: String!
       location: String!
       status: String!
-      Bid: String!
+      mode: String!
       description: String!
-      amenties: String!
       amount: Int!
       imageurl: String!
       state: String
@@ -123,6 +120,7 @@ const typeDefs = gql`
       city_district: String
       latitide: String
       longitude: String
+      amenties: [Int!]!
       tags: [Int!]!
       questions: [String!]!
     ): Task!

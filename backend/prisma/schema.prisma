@@ -36,10 +36,10 @@ model Task {
   userId        String // users ID
   location      String  // String of google Maps 
   status        String
-  Bid           String
+  mode          String
   createdAt     DateTime   @default(now())
   description   String
-  amenties      String
+  amenties      Int[]
   amount        Int
   imageurl      String
   state         String
