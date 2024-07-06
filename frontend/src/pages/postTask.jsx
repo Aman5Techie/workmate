@@ -40,6 +40,8 @@ import SelectAmenties from "../componets/selectAmenties";
 import { setloading } from "../app/slices/loadingSlice";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import { CREATEPOSTAPI } from "../graphql/query";
 
 const TAGS = [
   "Cleaning",
@@ -86,6 +88,8 @@ const PostTask = () => {
   const [currentmode, setcurrentmode] = useState("");
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loadingReducer.loading);
+  const [createpost, { loading: loadinga, error, data: dataa }] =
+    useMutation(CREATEPOSTAPI);
 
   const validation_Tag_Amenties = (tag) => {
     if (tag == "tag") {
@@ -165,7 +169,7 @@ const PostTask = () => {
     formState: { errors },
   } = useForm();
   // Handle form submission
-  const submitForm = () => {
+  const submitForm = async (e) => {
     if (
       validation_Tag_Amenties("tag") != true &&
       !validation_Tag_Amenties("amenties") != true
@@ -180,9 +184,11 @@ const PostTask = () => {
       });
       return;
     }
-    console.log("Sass");
-    fetchPhoto().then((image) => {
-      const dataToSubmit = {
+
+    // const {d} = useMutation()
+    try {
+      const image = await fetchPhoto();
+      const userdatatemp = {
         title: taskTitle,
         userId: user.id,
         location: `https://www.google.com/maps?q=${userdata.lat},${userdata.lon}`,
@@ -192,17 +198,40 @@ const PostTask = () => {
         amenties: userSelectedAmenties,
         amount: bidAmount,
         imageurl: image,
+        tags: userSelectedTags,
+        questions: questions,
         state: locationdata.state,
         city: locationdata.city,
         city_district: locationdata.district,
         latitide: userdata.lat,
         longitude: userdata.lon,
-        tags: userSelectedTags,
-        question: questions,
       };
 
-      console.log(dataToSubmit);
-    });
+      const { data } = await createpost({
+        variables: { ...userdatatemp },
+      });
+      
+      toast({
+        title: `Post Created Successfully `,
+        status: "success",
+        isClosable: true,
+        duration: "1500",
+        position: "top-right",
+      });
+
+     
+    } catch (e) {
+      console.error(e);
+      toast({
+        title: `Error occured sorry.`,
+        status: "error",
+        isClosable: true,
+        duration: "1500",
+        position: "top-right",
+      });
+    }
+
+    // console.log("Sass");
 
     // console.log(dataToSubmit);
     setTaskTitle("");

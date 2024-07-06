@@ -2,13 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { HStack, Tag, TagLabel, Wrap, WrapItem } from "@chakra-ui/react";
 
+
+
 const TagsMaker = ({ tags }) => {
+  console.log();
   return (
     <div>
       <Wrap spacing={2}>
         {tags.map((tag, index) => (
           <WrapItem key={index}>
-            <IndividualTag name={tag} />
+            <IndividualTag name={tag.name} />
           </WrapItem>
         ))}
       </Wrap>

@@ -27,7 +27,7 @@ const typeDefs = gql`
     location: String!
     status: String!
     description: String!
-    amenties: String!
+    amenties: [Int!]!
     amount: Int!
     imageurl: String!
     state: String
@@ -35,8 +35,12 @@ const typeDefs = gql`
     city_district: String
     latitide: String
     longitude: String
+    createdAt: String
+    userinfo: User!
+    mode: String
     tags: [Tags!]!
     questions: [Question!]!
+    answersofpost: [Answer!]!
   }
 
   type Question {
@@ -66,6 +70,7 @@ const typeDefs = gql`
   ############################################################### QUERY BELOW ############################################
   type AnswerQuery {
     getAnswers(taskid: String!): [Answer!]!
+    getallAnswers: [Answer!]!
   }
 
   # Users Query

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useTokenPresent } from "../customHooks/hooks";
 import { setUser } from "../app/slices/userSlice";
 import { login } from "../routes";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,6 +30,9 @@ const Login = () => {
       toast.error(error.response.data.msg);
     }
   };
+
+  const [username,setusername] = useState("aman")
+
   return (
     <>
       <div className="h-full items-center flex justify-center px-5 lg:px-48 bg-gray-100 py-12">
@@ -62,7 +66,8 @@ const Login = () => {
                     className="w-full px-5 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
                     name="username"
-                    value="aman"
+                    value={username}
+                    onChange={(e)=>{setusername(e.target.value)}}
                     placeholder="Username Or Email"
                   />
 

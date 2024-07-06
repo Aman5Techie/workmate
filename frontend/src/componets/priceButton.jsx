@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 const PlusMinusButton = ({ currentPrice, setcurrentprice }) => {
   const [price, setprice] = useState(currentPrice);
-
+  const value_to_up = parseInt(currentPrice/10)
   useEffect(() => {
     const id = setTimeout(() => {
       setcurrentprice(price);
@@ -21,7 +21,7 @@ const PlusMinusButton = ({ currentPrice, setcurrentprice }) => {
     <HStack spacing={0} px={4} py={5}>
       <Button
         leftIcon={<Icon as={FaPlus} />}
-        onClick={() => setprice((e) => e + 5)}
+        onClick={() => setprice((e) => e + value_to_up)}
         colorScheme="green"
         style={{
           borderTopLeftRadius: "10px",
@@ -30,11 +30,11 @@ const PlusMinusButton = ({ currentPrice, setcurrentprice }) => {
         _focus={{ boxShadow: "none" }} // Remove focus outline (optional)
         borderRadius="none" // Remove border radius
       >
-        5
+       {value_to_up}
       </Button>
       <Button>{price}</Button>
       <Button
-        onClick={() => setprice((e) => e - 5)}
+        onClick={() => setprice((e) => e - value_to_up)}
         rightIcon={<Icon as={FaMinus} />}
         colorScheme="red"
         style={{
@@ -44,7 +44,7 @@ const PlusMinusButton = ({ currentPrice, setcurrentprice }) => {
         _focus={{ boxShadow: "none" }} // Remove focus outline (optional)
         borderRadius="none"
       >
-        5
+        {value_to_up}
       </Button>
     </HStack>
   );

@@ -67,6 +67,9 @@ const resolvers = {
     getAnswers: async (_, { taskid }) => {
       return await prisma.answer.findMany({ where: { taskid: taskid } });
     },
+    getallAnswers : async (_)=>{
+      return await prisma.answer.findMany();
+    }
   },
   // ################################################{MUTATION}#################################################################
   Mutation: {
@@ -91,31 +94,42 @@ const resolvers = {
       _,
       {
         title,
-        taskId,
         userId,
         location,
         status,
-        Bid,
+        mode,
         description,
         amenties,
         amount,
         imageurl,
         tags,
         questions,
+        state,
+        city,
+        city_district,
+        latitide,
+        longitude,
       }
     ) => {
+      const random_id = Math.floor(Math.random() * 900000) + 100000;
+      
       return await prisma.task.create({
         data: {
           title,
-          taskId,
+          mode,
+          taskId: random_id.toString(),
           userId,
           location,
           status,
-          Bid,
           description,
           amenties,
           amount,
           imageurl,
+          state,
+          city,
+          city_district,
+          latitide,
+          longitude,
           tags: {
             connect: tags.map((tagId) => ({ id: tagId })),
           },
@@ -130,19 +144,29 @@ const resolvers = {
           question: true,
         },
       });
+
+      
+
+      
+    
     },
   },
 
   AnswerMutation: {
-    createAnswer: (_, { answers, userid, taskid, questions }) => {
-      return prisma.answer.create({
+    createAnswer: async (_, { answers, userid, taskid, questions,amount }) => {
+      
+      return await prisma.answer.create({
         data: {
           answers,
           userid,
           taskid,
           questions,
+          amount
         },
       });
+
+     
+
     },
   },
   //################################################{INDIVISUAL FEATURES}#################################################################
@@ -151,9 +175,16 @@ const resolvers = {
     questions: async (parent) => {
       return prisma.question.findMany({ where: { taskId: parent.id } });
     },
+    userinfo : async (parent)=>{
+      return prisma.user.findFirst({where : {id : parent.userId} })
+    },
+    answersofpost : async ( parent ) => {
+      console.log( parent.id);
+      return  prisma.answer.findMany({ where: { taskid: parent.id } });
+    },
   },
 
-  User: {
+  User: { 
     task: async (parent) => {
       const a = await prisma.task.findMany({ where: { userId: parent.id } });
       return a;
@@ -165,31 +196,43 @@ const resolvers = {
       return await prisma.user.findUnique({ where: { id: parent.userid } });
     },
   },
+
 };
 
-const tags = [
-  "Cleaning",
-  "Gardening",
-  "Repairs",
-  "Delivery",
-  "Assembly",
-  "Painting",
-  "Writing",
-  "Tutoring",
-  "Moving",
-  "Pet Care",
-  "Shopping",
-  "Data Entry",
-  "Graphic Design",
-  "Event Planning",
-  "Personal Assistant",
-  "Plumbing",
-  "Electrical",
-  "Web Development",
-  "Photography",
-  "Marketing",
-  "OTHER",
-];
+
+
+
+
+
+
+
+
+
+// const tags = [
+//   "Cleaning",
+//   "Gardening",
+//   "Repairs",
+//   "Delivery",
+//   "Assembly",
+//   "Painting",
+//   "Writing",
+//   "Tutoring",
+//   "Moving",
+//   "Pet Care",
+//   "Shopping",
+//   "Data Entry",
+//   "Graphic Design",
+//   "Event Planning",
+//   "Personal Assistant",
+//   "Plumbing",
+//   "Electrical",
+//   "Web Development",
+//   "Photography",
+//   "Marketing",
+//   "OTHER",
+// ];
+
+
 
 // prisma.tags.createMany({data : tags.map((name,index)=>({name,id:index}))}).then(a=>console.log(a))
 // prisma.tags.deleteMany({}).then(a=>console.log(a))

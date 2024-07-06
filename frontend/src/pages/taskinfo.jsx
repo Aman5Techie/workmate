@@ -21,12 +21,21 @@ import {
 } from "@chakra-ui/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
+import { useMutation, useQuery } from "@apollo/client";
+
 import { MdCircle } from "react-icons/md";
 import TagsMaker from "../componets/tagsMaker";
 import { Divider } from "@mui/material";
 import AmenitiesList from "../componets/amenties";
 import Questions from "../componets/questions";
 import PlusMinusButton from "../componets/priceButton";
+import {
+  GET_TASK_INFO_BY_ID,
+  gettags,
+  SUBMIT_ANSWER,
+  tempcheck,
+} from "../graphql/query";
+import { useSelector } from "react-redux";
 
 const tags = [
   "Cleaning",
@@ -52,46 +61,95 @@ const tags = [
   "OTHER",
 ];
 
-const questions = [
-  "What is Your Name ? ",
-  "How you are going to acheive this ? ",
-  "How you are going to acheive this ? ",
-];
-
 const Taskinfo = () => {
-  // const { taskid } = useParams();
+  const { taskid } = useParams();
   const [data, setData] = useState(null);
   const toast = useToast();
-  const [currentPrice, setcurrentprice] = useState(1000);
+  const [currentPrice, setcurrentprice] = useState(0);
+  const { data: taskinformation } = useQuery(GET_TASK_INFO_BY_ID, {
+    variables: { taskIdoftask: taskid },
+  });
+  const currentuser = useSelector((state) => state.userReducer.user);
+
+  const [createAnswer] = useMutation(SUBMIT_ANSWER);
 
   useEffect(() => {
     // getData
-    setData({});
-  }, []);
+    const taskdata = taskinformation?.taskQuery.task;
+    if (taskdata != undefined) {
+      console.log(taskdata);
+
+      setData(taskdata);
+      setcurrentprice(taskdata.amount);
+    }
+  }, [taskinformation]);
 
   // Submit Form
-  const submitForm = (e) => {
+  const formatDate = (timestamp) => {
+    const date = new Date(parseInt(timestamp));
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const submitForm = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const answers = [];
+    const question = [];
     let check = false;
-    questions.map((_, i) => {
+    data.questions.map((_, i) => {
       const data = formData.get(`question-${i + 1}`);
-      if (data == "") {
+      if (data.length < 50) {
         toast({
-          title: `Please answer question Q-${i + 1}`,
+          title: `Answer question Q-${i + 1} with a minimum of 50 characters.`,
           status: "error",
           isClosable: true,
           duration: "1500",
+          position: "top-right",
         });
+
         check = true;
       }
+
       answers.push(data);
+      question.push(_.question);
     });
+
     if (check) {
       return;
     }
-    console.log("ss");
+
+    try {
+      const { data: Postdata } = await createAnswer({
+        variables: {
+          questions: question,
+          answers: answers,
+          userid: currentuser.id,
+          taskid: taskid,
+          amount: currentPrice,
+        },
+      });
+      
+      toast({
+        title: `Answer Submitted Successfully `,
+        status: "success",
+        isClosable: true,
+        duration: "1500",
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: `You already filled this form.`,
+        status: "error",
+        isClosable: true,
+        duration: "1500",
+        position: "top-right",
+      });
+    }
   };
 
   if (data == null) {
@@ -116,8 +174,8 @@ const Taskinfo = () => {
                 />
 
                 <Box>
-                  <Heading size="sm">Segun Adebayo</Heading>
-                  <Text>Creator, Chakra UI</Text>
+                  <Heading size="sm">{data.userinfo.username.toUpperCase()}</Heading>
+                  <Text>{data.userinfo.email}</Text>
                 </Box>
               </Flex>
               <IconButton
@@ -136,20 +194,21 @@ const Taskinfo = () => {
               <Image
                 objectFit="cover"
                 maxW={{ base: "100%", md: "300px" }}
-                src="https://images.unsplash.com/photo-1616680802368-03858af6588a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2MjA2ODh8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MTg3MjQ4MjN8&ixlib=rb-4.0.3&q=80&w=400"
+                src={data.imageurl}
                 alt="Caffe Latte"
+                maxH={{ base: "100%", md: "270px" }}
                 className="h-56 w-full md:h-80 md:w-full"
               />
 
               <Stack>
                 <CardBody>
-                  <Heading size="md">TITLE</Heading>
+                  <Heading size="md">{data.title.toUpperCase()}</Heading>
                   <div className="flex">
                     <Text pt="2" className="font-semibold">
                       TASK ID :{" "}
                     </Text>
                     <Text pt="2" className="px-2">
-                      SSSSSSSSSS
+                      {data.taskId}
                     </Text>
                   </div>
                   <div className="flex">
@@ -157,7 +216,7 @@ const Taskinfo = () => {
                       Location :
                     </Text>
                     <Text pt="2" className="px-2">
-                      New Delhi
+                      {`${data.state}, ${data.city}, ${data.city_district}`}
                     </Text>
                   </div>
                   <div className="flex">
@@ -165,7 +224,7 @@ const Taskinfo = () => {
                       Posted :
                     </Text>
                     <Text pt="2" className="px-2">
-                      12 June 2024
+                      {formatDate(data.createdAt)}
                     </Text>
                   </div>
                   <List>
@@ -176,7 +235,7 @@ const Taskinfo = () => {
                         </Text>
                         <div className="flex items-center ">
                           <Text pt="2" className="px-2 uppercase">
-                            Open
+                            {data.status}
                           </Text>
 
                           <div className="pt-1">
@@ -195,7 +254,7 @@ const Taskinfo = () => {
                       Mode :
                     </Text>
                     <Text pt="2" className="px-2 uppercase">
-                      REMOTE
+                      {data.mode}
                     </Text>
                   </div>
                   <Flex>
@@ -203,7 +262,7 @@ const Taskinfo = () => {
                       Tags:
                     </Text>
                     <div className="pt-3">
-                      <TagsMaker tags={tags} />
+                      <TagsMaker tags={data.tags} />
                     </div>
                   </Flex>
                 </CardBody>
@@ -222,8 +281,7 @@ const Taskinfo = () => {
                 Description
               </Heading>
               <Text pt="1" className="text-md " py={1} px={4}>
-                New Delhiksaj sakjhdiasj asnbdasd as dasd sa dasd asd as das d
-                ass dsa d as d asdasdasdas dasd asd a das dasd sdas dasdsad a
+                {data.description}
               </Text>
               {/* <Stack>
               </Stack> */}
@@ -242,7 +300,7 @@ const Taskinfo = () => {
               <Heading size="md" py={1} px={4}>
                 Amenities
               </Heading>
-              <AmenitiesList useramenties={[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]} />
+              <AmenitiesList useramenties={data.amenties} />
             </Card>
 
             {/* // diveder  */}
@@ -254,7 +312,7 @@ const Taskinfo = () => {
                 Questions
               </Heading>
               <form onSubmit={submitForm}>
-                <Questions questions={questions} />
+                <Questions questions={data.questions} />
                 <Divider orientation="horizontal" />
                 <Card>
                   <Heading size="md" py={1} px={4} pt={4}>

@@ -60,7 +60,7 @@ export function Jobcard() {
               <ButtonGroup spacing="2">
                 <Button
                   variant="solid"
-                  onClick={() => navigate("/bid/jakndfkjaskjd")}
+                  onClick={() => navigate("/bid/a28b7a19-e4f9-47b4-8aac-254b61344b87")}
                   colorScheme="blue"
                 >
                   View Task

@@ -53,21 +53,21 @@ const chakraTheme = extendChakraTheme({
 import { InMemoryCache, ApolloProvider, ApolloClient } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
-  cache: new InMemoryCache(),
+  uri: "http://localhost:4000",
+  cache: new InMemoryCache()
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MUIThemeProvider theme={muiTheme}>
-      <ChakraProvider theme={chakraTheme}>
-        <Provider store={store}>
-          <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <MUIThemeProvider theme={muiTheme}>
+        <ChakraProvider theme={chakraTheme}>
+          <Provider store={store}>
             <App />
-          </ApolloProvider>
-        </Provider>
-      </ChakraProvider>
-    </MUIThemeProvider>
+          </Provider>
+        </ChakraProvider>
+      </MUIThemeProvider>
+    </ApolloProvider>
   </React.StrictMode>
 );
 

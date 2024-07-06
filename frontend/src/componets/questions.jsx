@@ -8,12 +8,13 @@ const Questions = ({ questions = [] }) => {
         return (
           <div key={i}>
             <Text mb="8px" px={4}>
-              Q-{i + 1} {e}
+              Q-{i + 1} {e.question}
             </Text>
             <div className="px-3 py-1 pb-3">
               <Textarea
                 placeholder="Write answer here !!!!!!"
                 name={`question-${i + 1}`}
+                // value={"ASbdjgasd"}
                 style={{
                   height: "40px",
                   lineHeight: "20px",
