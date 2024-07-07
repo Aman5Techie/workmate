@@ -131,3 +131,34 @@ export const SUBMIT_ANSWER = gql`
   }
 `;
 
+export const GET_ALL_ANSWER_OF_POST = gql`
+  query($taskId: ID!){
+  taskQuery {
+    task(id: $taskId) {
+        title
+        taskId
+        createdAt
+        state
+        amount
+        city
+        status
+        mode
+        city_district
+        tags {
+          name
+        }
+        answersofpost {
+          user {
+            username
+          }
+          amount
+          questions
+          answers
+        }
+        
+    }
+  }
+}
+
+
+`

@@ -26,17 +26,16 @@ const data = [1, 2];
 const value =
   "This setup ensures that the <div> element adapts its maximum width based on the screen size, making it responsive across different devices and viewport sizes. Adjust the max-w-* classes according to your design needs to control how much the width should scale for different screen sizes while maintaining a responsive layout.";
 
-const BidderInfo = () => {
+const BidderInfo = ({ bidders }) => {
   const [selected, setSelected] = useState(null);
+  console.log(bidders);
 
-  const chooseBidder = ()=>{
-    
-  }
+  const chooseBidder = () => {};
 
   return (
     <div>
       <Accordion allowToggle>
-        {data.map((e, i) => {
+        {bidders.map((answer, i) => {
           return (
             <div key={i}>
               <List p={2}>
@@ -60,7 +59,7 @@ const BidderInfo = () => {
                             selected == i ? "text-black" : ""
                           } text-xl`}
                         >
-                          Aman Vema
+                          {answer.user.username.toUpperCase()}
                         </div>
                       </div>
                       <div className="flex items-center">
@@ -69,7 +68,7 @@ const BidderInfo = () => {
                             selected == i ? "text-black" : ""
                           } text-2xl px-3 font-serif`}
                         >
-                          1000
+                          ₹ {answer.amount}
                         </div>
                         <div className="px-2 py-2 dark:bg-blue-300 rounded-xl w-25 h-11">
                           <Button
@@ -96,18 +95,22 @@ const BidderInfo = () => {
                         <AccordionIcon />
                       </AccordionButton>
                     </h2>
-                    <AccordionPanel pb={4}>
-                      <div key={i}>
-                        <Text mb="8px" px={0}>
-                          Q-{i + 1} Question is Going Here...........
-                        </Text>
-                        <div className="px-0 py-1 pb-3 ">
-                          <div className=" w-[453px] sm:w-[620px] md:w-full text-sm  break-words bg-gray-100 p-4 dark:bg-gray-700 rounded-md shadow-md">
-                            {value}
+                    {answer.answers.map((ans, index) => {
+                      return (
+                        <AccordionPanel key={index + "ans"} pb={1}>
+                          <div key={i}>
+                            <Text mb="8px" px={0}>
+                              Q-{i + 1} {answer.questions[index]}
+                            </Text>
+                            <div className="px-0 py-1 pb-3 ">
+                              <div className=" w-[453px] sm:w-[620px] md:w-full text-sm  break-words bg-gray-100 p-4 dark:bg-gray-700 rounded-md shadow-md">
+                                {ans}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </AccordionPanel>
+                        </AccordionPanel>
+                      );
+                    })}
                   </AccordionItem>
                 </Stack>
               </List>
@@ -123,7 +126,7 @@ const BidderInfo = () => {
       </Accordion>
       <div className="w-full px-2">
         <Button
-            onClick={chooseBidder}
+          onClick={chooseBidder}
           colorScheme="blue"
           className="w-full"
           isDisabled={selected == null}
@@ -135,6 +138,8 @@ const BidderInfo = () => {
   );
 };
 
-BidderInfo.propTypes = {};
+BidderInfo.propTypes = {
+  bidders: PropTypes.array,
+};
 
 export default BidderInfo;

@@ -88,6 +88,7 @@ const PostTask = () => {
   const [currentmode, setcurrentmode] = useState("");
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loadingReducer.loading);
+  
   const [createpost, { loading: loadinga, error, data: dataa }] =
     useMutation(CREATEPOSTAPI);
 

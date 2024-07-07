@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -21,6 +21,11 @@ import ChangeStatus from "../iconBtn/changeStatus";
 import { EditIcon } from "@chakra-ui/icons";
 import TagsMaker from "../componets/tagsMaker";
 import BidderInfo from "../componets/BidderInfo";
+import { useParams } from "react-router-dom";
+import { GET_ALL_ANSWER_OF_POST } from "../graphql/query";
+import { useQuery } from "@apollo/client";
+import SpinnerComp from "../componets/spinner";
+import { formatDate } from "../utils/utils";
 
 // Sample bids data
 const bids = [
@@ -32,7 +37,16 @@ const bids = [
 const ChooseBidder = () => {
   const [selectedBid, setSelectedBid] = useState(null);
   const [status, setStatus] = useState("Open");
-  console.log(status);
+  const {taskid} = useParams()
+  const [data,setdata] = useState(null)
+  
+  console.log(taskid);
+
+  const { data: taskinformation } = useQuery(GET_ALL_ANSWER_OF_POST, {
+    variables: { taskId: taskid },
+  });
+
+
   const handleBidSelection = (id) => {
     setSelectedBid(id);
   };
@@ -41,6 +55,22 @@ const ChooseBidder = () => {
     console.log("Selected Bid ID:", selectedBid);
     // Handle the selected bid submission logic here
   };
+
+
+  useEffect(() => {
+    setdata(taskinformation?.taskQuery.task);
+    setStatus(taskinformation?.taskQuery.task.status)
+    console.log(taskinformation?.taskQuery.task);
+  }, [taskinformation]);
+
+
+  if (data == null) {
+    return (
+      <div className=" flex justify-center h-96 items-center">
+        <SpinnerComp s={120} />
+      </div>
+    );
+  }
 
   return (
     <div className="py-2 flex justify-center ">
@@ -62,13 +92,13 @@ const ChooseBidder = () => {
 
               <Stack>
                 <CardBody>
-                  <Heading size="md">TITLE</Heading>
+                  <Heading size="md">{data.title.toUpperCase()}</Heading>
                   <div className="flex">
                     <Text pt="2" className="font-semibold">
                       TASK ID :{" "}
                     </Text>
                     <Text pt="2" className="px-2">
-                      SSSSSSSSSS
+                      {data.taskId}
                     </Text>
                   </div>
                   <div className="flex">
@@ -76,7 +106,7 @@ const ChooseBidder = () => {
                       Location :
                     </Text>
                     <Text pt="2" className="px-2">
-                      New Delhi
+                    {`${data.state}, ${data.city}, ${data.city_district}`}
                     </Text>
                   </div>
                   <div className="flex">
@@ -84,7 +114,15 @@ const ChooseBidder = () => {
                       Posted :
                     </Text>
                     <Text pt="2" className="px-2">
-                      12 June 2024
+                      {formatDate(data.createdAt)}
+                    </Text>
+                  </div>
+                  <div className="flex">
+                    <Text pt="2" className="font-semibold">
+                      Amount :
+                    </Text>
+                    <Text pt="2" className="px-2">
+                    ₹ {(data.amount)}
                     </Text>
                   </div>
                   <List>
@@ -98,7 +136,7 @@ const ChooseBidder = () => {
                       Tags:
                     </Text>
                     <div className="pt-3">
-                      <TagsMaker tags={[1, 2, 3, 4, 5, 6,"Asjbsbd","sakndkasjnkld","sadadjbdha","amsd  ams"]} />
+                      <TagsMaker tags={data.tags} />
                     </div>
                   </Flex>
                 </CardBody>
@@ -132,7 +170,7 @@ const ChooseBidder = () => {
                   ))}
                 </List>
               </RadioGroup> */}
-              <BidderInfo/>
+              <BidderInfo bidders = {data.answersofpost}/>
             </CardBody>
            
           </Stack>

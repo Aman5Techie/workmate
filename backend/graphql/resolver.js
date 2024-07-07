@@ -179,7 +179,6 @@ const resolvers = {
       return prisma.user.findFirst({where : {id : parent.userId} })
     },
     answersofpost : async ( parent ) => {
-      console.log( parent.id);
       return  prisma.answer.findMany({ where: { taskid: parent.id } });
     },
   },

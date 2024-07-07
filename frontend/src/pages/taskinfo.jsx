@@ -36,6 +36,7 @@ import {
   tempcheck,
 } from "../graphql/query";
 import { useSelector } from "react-redux";
+import { formatDate } from "../utils/utils";
 
 const tags = [
   "Cleaning",
@@ -85,14 +86,7 @@ const Taskinfo = () => {
   }, [taskinformation]);
 
   // Submit Form
-  const formatDate = (timestamp) => {
-    const date = new Date(parseInt(timestamp));
-    return date.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
+  
 
   const submitForm = async (e) => {
     e.preventDefault();

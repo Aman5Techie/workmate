@@ -25,7 +25,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/bid" element={<BidderHomepage />} />
             <Route path="/bid/:taskid" element={<Taskinfo />} />
-            <Route path="/chooseBidder" element={<ChooseBidder />} />
+            <Route path="/chooseBidder/:taskid" element={<ChooseBidder />} />
             <Route path="/posttask" element={<PostTask />} />
           </Routes>
         </BrowserRouter>

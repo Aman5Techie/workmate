@@ -1,4 +1,3 @@
-
 import {
   Menu,
   MenuButton,
@@ -17,6 +16,7 @@ const Usericon = ({ name }) => {
   const handleLogout = () => {
     localStorage.removeItem("authorization");
     dispatch(removeUser());
+    window.location.href = "/login";
   };
 
   const handleProfile = () => {
